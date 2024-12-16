@@ -47,12 +47,12 @@ export function Mdxs() {
   if (mdxs.length === 0) return (
   <>
     <div>No data</div>
-    <Button><Link href={`/editor`}>Add New</Link></Button>
+    <Button><Link href={`/editor/0`}>Add New</Link></Button>
   </>)
  
   return (
     <div>
-    <Button><Link href={`/editor`}>Add New</Link></Button>
+    <Button><Link href={`/editor/0`}>Add New</Link></Button>
     <h1>Data List</h1>
     <table id="customers">
       <thead>
