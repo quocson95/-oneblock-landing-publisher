@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import UseStorage from './libs/userStorage'
 // 1. Specify protected and public routes
 // const protectedRoutes = ['/dashboard', '/editor']
-const publicRoutes = ['/auth']
+const publicRoutes = ['/auth', "/auth/sso_callback"]
  
 export default async function middleware(req: NextRequest) {
     console.log("middile")
