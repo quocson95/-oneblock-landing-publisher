@@ -6,8 +6,10 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import {  useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { HostBackend } from "@/libs/contanst";
 
-const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
+const EditorComp = dynamic(() => import("../../components/Editor"), { ssr: false });
 
 const Editor =  (params: Promise<{ slug: string }>) =>{
     const [mdxContent, setMdxContent] = useState(' ');
@@ -15,28 +17,27 @@ const Editor =  (params: Promise<{ slug: string }>) =>{
     const [name, setName] = useState('');
     const[saveStatus, setSaveStatus] = useState('')
     let didInit = false;   
-    // folder structure /posts/[pid]
-    // const params = useParams();
-    console.log(params)
-    let slug:string = '';
-    // let slug = '';
+
+    const router = useRouter();
+   
+    let slug = '';
+    
+    
+
     async function fetchPosts() {      
       if (!slug || slug.length <= 0 || slug =='' || slug=='0') {
         setMdxContent(' ');
         setLoading(false);
         return;
       }
-    {
-      console.log('load mdx', slug);
-      const res = await fetch('https://api.oneblock.vn/be/mdx/' +slug+'?loadContent=1')
-      const bodyJson = await res.json();      
-      // console.log(bodyJson);
-      setMdxContent(bodyJson.content);
-      setName( bodyJson.name);
-    }
-    {
-      const res = await fetch('')
-    }
+      {
+        console.log('load mdx', slug);
+        const res = await fetch(`${HostBackend}/be/mdx/${slug}?loadContent=1`)
+        const bodyJson = await res.json();      
+        // console.log(bodyJson);
+        setMdxContent(bodyJson.content);
+        setName( bodyJson.name);
+      }
       setLoading(false);
     };
 
@@ -46,7 +47,7 @@ const Editor =  (params: Promise<{ slug: string }>) =>{
       if (!saveName.endsWith(".mdx")) {
         saveName += ".mdx"
       }
-      const res = await fetch('https://api.oneblock.vn/be/mdx/?name='+saveName + "&id="+id, {method: "put", body: mdxContent,} )
+      const res = await fetch(`${HostBackend}/be/mdx/?name=${saveName}&id=${id}`, {method: "put", body: mdxContent,} )
       console.log(res);
       if (res.status == 200) {
         setSaveStatus('Save success!'); // Displays a success message
@@ -64,9 +65,13 @@ const Editor =  (params: Promise<{ slug: string }>) =>{
       if (didInit) {
         return;
       }
+      let { id } = router.query;
+      if (id as string[]) {
+        slug = id?.at(0) || '';
+      }
       didInit  = true;
       fetchPosts();
-    }, [])
+    }, [router.query])
     if (loading) {
       return <Loading></Loading>
     }

@@ -1,9 +1,3 @@
-import { PropsWithChildren } from "react";
-
-type StringProps = {
-    content: string; // Replace 'string' with the actual type of 'content'
-  };
-
 const Button = ({
     content,
     onClick,

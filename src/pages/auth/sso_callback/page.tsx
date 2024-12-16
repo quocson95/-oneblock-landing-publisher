@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSearchParams } from 'next/navigation'
+import { HostBackend, KeyTokenSession } from "@/libs/contanst";
 
 const Page =()=>{
     const searchParams = useSearchParams()
@@ -21,7 +22,7 @@ const Page =()=>{
           }
       
           // Call the server-side API to fetch the token
-          fetch(`https://api.oneblock.vn/be/account/token`, {
+          fetch(`${HostBackend}/be/account/token`, {
             method: 'POST',
             body: id,
           })
@@ -29,7 +30,7 @@ const Page =()=>{
             .then((data) => {
               if (data.token) {
                 // Store token in localStorage
-                localStorage.setItem('token', data.token);          
+                localStorage.setItem(KeyTokenSession, data.token);          
                 // Redirect to dashboard
                 // window.location.href = 'https://editor.oneblock.vn/dashboard';
                 console.log('login success, go to dashboard')
