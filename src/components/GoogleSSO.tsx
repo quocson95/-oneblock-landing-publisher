@@ -4,7 +4,7 @@ import { HostBackend } from "@/libs/contanst";
 
 const GoogleSSO =  () =>{
     const loginSSO = () => {
-        window.open(`${HostBackend}/be/auth/google_signin`)
+        location.href = (`${HostBackend}/be/auth/google_signin`);
     }
     return (
         <>
