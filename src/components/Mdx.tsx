@@ -1,18 +1,17 @@
 'use client'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Button from './Button';
  
 export function Mdxs() {
   const [mdxs, setData] = useState([])
-  let didInit = false;
-  let loading = false;
+  const didInit = useRef(false);
   useEffect(() => {
     async function fetchPosts() {
-      if (didInit) {
+      if (didInit.current) {
         return;
       }
-      didInit = true;
+      didInit.current = true;
       const res = await fetch('https://api.oneblock.vn/be/mdx/')
       const data = await res.json()
       console.log(data);
@@ -31,7 +30,7 @@ export function Mdxs() {
       });
       // Remove the deleted item from the state
       setData((mdxs) => mdxs.filter((item: any) => {
-        item.id !== id;
+        return item.id !== id;
       }));
     } catch (error) {
       console.error('Error deleting item:', error);

@@ -4,35 +4,35 @@ import Button from "@/components/Button";
 import Loading from "@/components/loading";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import {  useEffect, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
 
 const EditorComp = dynamic(() => import("../../components/Editor"), { ssr: false });
 
-const Editor =  (params: Promise<{ slug: string }>) =>{
+const Editor =  () =>{
     const [mdxContent, setMdxContent] = useState(' ');
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState('');
     const[saveStatus, setSaveStatus] = useState('')
-    let didInit = false;   
+    const didInit = useRef(false);   
 
     const router = useRouter();
    
-    let slug = '';
+    const slug = useRef('');
     
     
 
     async function fetchPosts() {      
-      if (!slug || slug.length <= 0 || slug =='' || slug=='0') {
+      if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
         setMdxContent(' ');
         setLoading(false);
         return;
       }
       {
-        console.log('load mdx', slug);
-        const res = await fetch(`${HostBackend}/be/mdx/${slug}?loadContent=1`)
+        console.log('load mdx', slug.current);
+        const res = await fetch(`${HostBackend}/be/mdx/${slug.current}?loadContent=1`)
         const bodyJson = await res.json();      
         // console.log(bodyJson);
         setMdxContent(bodyJson.content);
@@ -62,14 +62,14 @@ const Editor =  (params: Promise<{ slug: string }>) =>{
     }
 
     useEffect(() => {
-      if (didInit) {
+      if (didInit.current) {
         return;
       }
-      let { id } = router.query;
+      const { id } = router.query;
       if (id as string[]) {
-        slug = id?.at(0) || '';
+        slug.current = id?.at(0) || '';
       }
-      didInit  = true;
+      didInit.current = true;
       fetchPosts();
     }, [router.query])
     if (loading) {
@@ -79,7 +79,7 @@ const Editor =  (params: Promise<{ slug: string }>) =>{
     return(
       <>
         <Button><Link href="/dashboard">Home</Link></Button>
-        <Button  onClick={()=>{          saveMdx(parseInt(slug));        }} >Save</Button>        
+        <Button  onClick={()=>{          saveMdx(parseInt(slug.current));        }} >Save</Button>        
         { saveStatus.length > 0 &&
         <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"> {saveStatus}</button>
         }

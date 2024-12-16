@@ -10,7 +10,7 @@ type UseStorageReturnValue = {
 
 };
 
-const useStorage = (): UseStorageReturnValue => {
+const UseStorage = (): UseStorageReturnValue => {
     const isBrowser: boolean = ((): boolean => typeof window !== 'undefined')();
     const storageType = (type?:string) =>  {
         if (!type || type == 'local') {
@@ -46,4 +46,4 @@ const useStorage = (): UseStorageReturnValue => {
   };
 }
 
-export default useStorage;
+export default UseStorage;

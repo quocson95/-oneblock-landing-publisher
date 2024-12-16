@@ -1,6 +1,6 @@
 import { KeyTokenSession } from '@/libs/contanst'
 import { NextRequest, NextResponse } from 'next/server'
-import useStorage from './libs/userStorage'
+import UseStorage from './libs/userStorage'
 // 1. Specify protected and public routes
 // const protectedRoutes = ['/dashboard', '/editor']
 const publicRoutes = ['/auth']
@@ -14,9 +14,9 @@ export default async function middleware(req: NextRequest) {
     if (isPublicRoute) {
         return NextResponse.next();
     }
-    const storage = useStorage();
+    const {getItem} = UseStorage();
     // 3. Read the token from session storage
-    const storedData = storage.getItem(KeyTokenSession) || '';
+    const storedData = getItem(KeyTokenSession) || '';
     if (storedData.length === 0) {
         // return NextResponse.next();
         return NextResponse.redirect(new URL('/auth', req.nextUrl))
