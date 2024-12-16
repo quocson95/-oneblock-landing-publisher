@@ -1,15 +1,17 @@
 'use client'
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useSearchParams } from 'next/navigation'
+import { ReadonlyURLSearchParams, useRouter, useSearchParams } from "next/navigation";
+import {  useEffect } from "react";
 import { HostBackend, KeyTokenSession } from "@/libs/contanst";
+import UseStorage from "@/libs/userStorage";
+import { setCookie } from "cookies-next";
 
 const Page =()=>{
     const searchParams = useSearchParams()
     const router = useRouter()
-    useEffect(()=>{
+    // useEffect(() =>{
         const id = searchParams?.get('id')
+        console.log(searchParams);
         const errCode = searchParams?.get('errCode');
         if (errCode && errCode.length > 0 && parseInt(errCode)>0) {
             console.error('ErrorCode', errCode);
@@ -25,12 +27,15 @@ const Page =()=>{
           fetch(`${HostBackend}/be/account/token`, {
             method: 'POST',
             body: id,
+             cache: 'no-store'
           })
             .then((response) => response.json())
             .then((data) => {
               if (data.token) {
                 // Store token in localStorage
-                localStorage.setItem(KeyTokenSession, data.token);          
+                // const {setItem} = UseStorage();
+                // setItem(KeyTokenSession, data.token);          
+                setCookie("session", data.token);
                 // Redirect to dashboard
                 // window.location.href = 'https://editor.oneblock.vn/dashboard';
                 console.log('login success, go to dashboard')
@@ -46,7 +51,7 @@ const Page =()=>{
             .catch((error) => {
               console.error('Error in SSO callback:', error);
             });
-    })
+    // }, [searchParams])
     
     return (
         <>OK</>

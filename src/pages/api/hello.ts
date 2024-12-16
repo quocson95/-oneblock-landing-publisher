@@ -9,5 +9,10 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
-  res.status(200).json({ name: "John Doe" });
+  console.log("aa",req.query);
+  const {id}= req.query;
+  // createSession(id as string);
+  // res.status(200).json({ name: "John Doe" });
+  res.setHeaders
+  res.redirect("/dashboard")
 }

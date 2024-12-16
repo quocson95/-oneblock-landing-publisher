@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@mdxeditor/editor": "^3.20.0",
+    "cookies-next": "^5.0.2",
+    "jose": "^5.9.6",
     "next": "15.1.0",
     "nextjs-progressbar": "^0.0.16",
     "react": "^19.0.0",
