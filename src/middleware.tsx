@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import { decrypt } from './libs/crypto'
 // 1. Specify protected and public routes
 // const protectedRoutes = ['/dashboard', '/editor']
-const publicRoutes = ['/auth', "/auth/sso_callback", "/hello"]
+const publicRoutes = ['/auth', "/auth/sso_callback"]
  
 export default async function middleware(req: NextRequest) {
     // 2. Check if the current route is protected or public
@@ -26,6 +26,9 @@ export default async function middleware(req: NextRequest) {
         // return NextResponse.next();
         console.log('key on storage empty')
         return NextResponse.redirect(new URL('/auth', req.nextUrl))
+    }
+    if (path=="/") {
+        return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
     }
     // 5. Redirect to /dashboard if the user is authenticated
         return NextResponse.next();

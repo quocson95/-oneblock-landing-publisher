@@ -8,6 +8,7 @@ import {  useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
+import { getCookie } from "cookies-next";
 
 const EditorComp = dynamic(() => import("../../components/Editor"), { ssr: false });
 
@@ -47,7 +48,11 @@ const Editor =  () =>{
       if (!saveName.endsWith(".mdx")) {
         saveName += ".mdx"
       }
-      const res = await fetch(`${HostBackend}/be/mdx/?name=${saveName}&id=${id}`, {method: "put", body: mdxContent,} )
+      const cookie = await getCookie("session")?.toString();
+      console.log(cookie)
+      const res = await fetch(`${HostBackend}/be/admin/mdx/?name=${saveName}&id=${id}`,
+         {method: "put", body: mdxContent, headers: {          Authorize: `${cookie}`,
+      }} )
       console.log(res);
       if (res.status == 200) {
         setSaveStatus('Save success!'); // Displays a success message
