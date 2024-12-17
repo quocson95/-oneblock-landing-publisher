@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Loading from "@/components/loading";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import {  useEffect, useRef, useState } from "react";
+import {  Suspense, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
@@ -18,13 +18,9 @@ const Editor =  () =>{
     const [name, setName] = useState('');
     const[saveStatus, setSaveStatus] = useState('')
     const didInit = useRef(false);   
-
     const router = useRouter();
-   
     const slug = useRef('');
     
-    
-
     async function fetchPosts() {      
       if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
         setMdxContent(' ');
@@ -99,8 +95,9 @@ const Editor =  () =>{
           </div>
         </form>        
        
-        
+        <Suspense fallback={<Loading />}>
         <EditorComp content={mdxContent} onContentChange={copyContentMdx}/>        
+        </Suspense>
       </>
     )
 }
