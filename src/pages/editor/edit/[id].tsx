@@ -9,8 +9,9 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
 import { getCookie } from "cookies-next";
+import Tabs from "@/components/Tabs";
 
-const EditorComp = dynamic(() => import("../../components/Editor"), { ssr: false });
+const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
 const Editor =  () =>{
     const [mdxContent, setMdxContent] = useState(' ');
@@ -45,7 +46,6 @@ const Editor =  () =>{
         saveName += ".mdx"
       }
       const cookie = await getCookie("session")?.toString();
-      console.log(cookie)
       const res = await fetch(`${HostBackend}/be/admin/mdx/?name=${saveName}&id=${id}`,
          {method: "put", body: mdxContent, headers: {          Authorize: `${cookie}`,
       }} )
@@ -79,7 +79,8 @@ const Editor =  () =>{
     
     return(
       <>
-        <Button><Link href="/dashboard">Home</Link></Button>
+        {/* <Button><Link href="/dashboard">Home</Link></Button> */}
+        <Tabs></Tabs>
         <Button  onClick={()=>{          saveMdx(parseInt(slug.current));        }} >Save</Button>        
         { saveStatus.length > 0 &&
         <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"> {saveStatus}</button>

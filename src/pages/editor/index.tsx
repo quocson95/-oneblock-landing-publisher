@@ -1,11 +1,14 @@
 'use client'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
-import Button from './Button';
+import Button from '../../components/Button';
+import Tabs from '../../components/Tabs';
+import Loading from '@/components/loading';
  
 export function Mdxs() {
   const [mdxs, setData] = useState([])
   const didInit = useRef(false);
+  const loading = useRef(true);
   useEffect(() => {
     async function fetchPosts() {
       if (didInit.current) {
@@ -15,7 +18,8 @@ export function Mdxs() {
       const res = await fetch('https://api.oneblock.vn/be/mdx/')
       const data = await res.json()
       console.log(data);
-      setData(data)
+      setData(data);
+      loading.current = false;
     }
     fetchPosts()
   }, [])
@@ -43,16 +47,23 @@ export function Mdxs() {
     // Implement edit functionality here
   };
  
-  if (!mdxs) return <div>Loading...</div>
+  if (loading.current) return (
+    <>
+      <Tabs></Tabs>
+      <Loading></Loading>
+    </>
+  )
   if (mdxs.length === 0) return (
   <>
+    <Tabs></Tabs>
     <div>No data</div>
-    <Button><Link href={`/editor/0`}>Add New</Link></Button>
+    {/* <Button><Link href={`/editor/edit/0`}>Add New</Link></Button> */}
   </>)
  
   return (
     <div>
-    <Button><Link href={`/editor/0`}>Add New</Link></Button>
+    {/* <Button><Link href={`/editor/0`}>Add New</Link></Button> */}
+    <Tabs></Tabs>
     <h1>Data List</h1>
     <table id="customers">
       <thead>
@@ -71,7 +82,7 @@ export function Mdxs() {
             <td>
               {/* <button onClick={() => handleEdit(item.id)}>Edit</button> */}
               {/* <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><Link href={`/editor/${item.id}`} className='text-white' style{"}>Edit</Link></button> */}
-              <Button><Link href={`/editor/${item.id}`}>Edit</Link></Button>
+              <Button><Link href={`/editor/edit/${item.id}`}>Edit</Link></Button>
             </td>
             {/* <td><button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Delete</button></td> */}
           </tr>
@@ -81,3 +92,5 @@ export function Mdxs() {
   </div>
   )
 }
+
+export default Mdxs;
