@@ -77,8 +77,9 @@ const Editor =  () =>{
         return;
       }
       const { id } = router.query;
+      console.log(id);
       if (id as string[]) {
-        slug.current = id?.at(0) || '';
+        slug.current = id?.toString() || '';
       }
       didInit.current = true;
       fetchPosts();
