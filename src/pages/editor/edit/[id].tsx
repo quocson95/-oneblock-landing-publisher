@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
 import { getCookie } from "cookies-next";
 import Tabs from "@/components/Tabs";
+import ToNonAccentVietnamese, { ConvertToAlphabetOnly } from "@/libs/ nonAccentVietnamese";
 
 const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
@@ -34,14 +35,14 @@ const Editor =  () =>{
         const bodyJson = await res.json();      
         // console.log(bodyJson);
         setMdxContent(bodyJson.content);
-        setName( bodyJson.name);
+        setName(bodyJson.name.replaceAll('.mdx', ''));
       }
       setLoading(false);
     };
 
     const saveMdx = async (id: number) => {
       // console.log('save', mdxContent)
-      let saveName = name;
+      let saveName = fixNameOfMdx(name);
       if (!saveName.endsWith(".mdx")) {
         saveName += ".mdx"
       }
@@ -55,6 +56,15 @@ const Editor =  () =>{
       } else {
         setSaveStatus('Save failed!'+ res.status); // Displays a success message
       }
+    }
+
+    const fixNameOfMdx = (name: string) =>  {
+      name = name.trim().toLowerCase().substring(0, 80);
+      name = ToNonAccentVietnamese(name);
+      name = ConvertToAlphabetOnly(name);
+      name = name.replaceAll(' ', '-');
+      setName(name);
+      return name
     }
 
     const copyContentMdx = (mdx: string) => {
@@ -89,8 +99,9 @@ const Editor =  () =>{
           <div className="grid gap-6 mb-6 md:grid-cols-2">
           <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Name</label>
-              <input onChange={(e)=>{ setName(e.target.value)}}              
+              <input onChange={(e)=>{ fixNameOfMdx(e.target.value)}}              
               value={name}
+              maxLength={80}
                 type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
           </div>
           </div>
