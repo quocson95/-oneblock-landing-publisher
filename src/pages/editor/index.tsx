@@ -15,7 +15,7 @@ export function Mdxs() {
         return;
       }
       didInit.current = true;
-      const res = await fetch('https://api.oneblock.vn/be/mdx/')
+      const res = await fetch('https://api.oneblock.vn/be/mdx?type_doc=-1')
       const data = await res.json()
       console.log(data);
       setData(data);

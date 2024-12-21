@@ -19,11 +19,14 @@ const ToNonAccentVietnamese = (str:string) => {
     return str;
 }
 
-const ConvertToAlphabetOnly = (str: string) => {
-    str = str.replace(/[^a-zA-Z\s]/g, "");
+const ConvertToNameFormat = (str: string) => {
+    str = str.replace(/[^a-zA-Z0-9\s+\-]/g, "");
     str = str.replace(/\s+/g, " ");
+    str = str.replace(/-+/g, "-");
+    str = str.replace(/\s-+/g, "-");
+    str = str.replaceAll(' ', '-');
     return str.trim();
 }
 export default ToNonAccentVietnamese;
 
-export {ConvertToAlphabetOnly, ToNonAccentVietnamese };
+export {ConvertToNameFormat, ToNonAccentVietnamese };

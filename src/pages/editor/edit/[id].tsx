@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
 import { getCookie } from "cookies-next";
 import Tabs from "@/components/Tabs";
-import ToNonAccentVietnamese, { ConvertToAlphabetOnly } from "@/libs/ nonAccentVietnamese";
+import { ConvertToNameFormat, ToNonAccentVietnamese } from "@/libs/ nonAccentVietnamese";
 
 const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
@@ -61,8 +61,7 @@ const Editor =  () =>{
     const fixNameOfMdx = (name: string) =>  {
       name = name.trim().toLowerCase().substring(0, 80);
       name = ToNonAccentVietnamese(name);
-      name = ConvertToAlphabetOnly(name);
-      name = name.replaceAll(' ', '-');
+      name = ConvertToNameFormat(name);
       setName(name);
       return name
     }
