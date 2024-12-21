@@ -64,14 +64,14 @@ export function Mdxs() {
     <div>
     {/* <Button><Link href={`/editor/0`}>Add New</Link></Button> */}
     <Tabs></Tabs>
-    <h1>Data List</h1>
+    <h1>Posts in landing page</h1>
     <table id="customers">
       <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th></th>
-          <th></th>
+          <th>Action</th>
+          <th>CreateAt</th>
         </tr>
       </thead>
       <tbody>
@@ -85,6 +85,7 @@ export function Mdxs() {
               <Button><Link href={`/editor/edit/${item.id}`}>Edit</Link></Button>
             </td>
             {/* <td><button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Delete</button></td> */}
+            <td>{item.created_at}</td>
           </tr>
         ))}
       </tbody>

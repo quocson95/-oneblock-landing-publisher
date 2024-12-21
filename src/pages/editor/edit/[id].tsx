@@ -3,9 +3,7 @@
 import Button from "@/components/Button";
 import Loading from "@/components/loading";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import {  Suspense, useEffect, useRef, useState } from "react";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
 import { getCookie } from "cookies-next";
