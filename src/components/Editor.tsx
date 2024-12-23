@@ -60,14 +60,14 @@ type StringProps = {
 
 const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
   const mdxEditorRef = React.useRef<MDXEditorMethods>(null)
-  mdxEditorRef.current?.setMarkdown(content);
+  // mdxEditorRef.current?.setMarkdown(content);
   onContentChange(mdxEditorRef);
     return (<div>
       <MDXEditor     
       contentEditableClassName="prose"
        markdown={content} 
       ref={mdxEditorRef}
-      // onChange={onContentChange}
+      // onChange={console.log}
       // markdown={content}
       plugins={[
         headingsPlugin(),
@@ -91,7 +91,7 @@ const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
         imagePlugin({
           imageUploadHandler: imageUpload,
           imagePreviewHandler: imagePreview,
-          imageAutocompleteSuggestions: ['https://picsum.photos/200/300', 'https://picsum.photos/200'],
+          imageAutocompleteSuggestions: ['https://api.oneblock.vn/be/s3?bucket=cms-images&name=OneBlock-Logo-Black-RGB%401x.png'],
         }),
         frontmatterPlugin(),
       ]}

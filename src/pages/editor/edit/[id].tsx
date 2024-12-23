@@ -23,8 +23,17 @@ const Editor =  () =>{
     const slug = useRef('');
     let mdxEditorRef = React.useRef<MDXEditorMethods>(null)
     async function fetchPosts() {      
+      const defaultMdx = `---
+heroImage: https://api.oneblock.vn/be/s3?bucket=cms-images&name=OneBlock-Logo-Black-RGB%401x.png
+category:
+description: ''
+pubDate: '${new Date().toISOString()}'
+tags:
+   - crypto
+title: ''
+---`
       if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
-        setMdxContent(' ');
+        setMdxContent(defaultMdx);
         setLoading(false);
         return;
       }
@@ -32,9 +41,15 @@ const Editor =  () =>{
         console.log('load mdx', slug.current);
         const res = await fetch(`${HostBackend}/be/mdx/${slug.current}?loadContent=1`)
         const bodyJson = await res.json();      
-        // console.log(bodyJson);
-        setMdxContent(bodyJson.content);
-        setName(bodyJson.display_name.replaceAll('.mdx', ''));
+        if (bodyJson.content > 0) {
+          setMdxContent(bodyJson.content);
+        } else {
+          
+          setMdxContent(defaultMdx);
+        }
+        if (bodyJson.name.length > 0) {
+          setName(bodyJson.name.replaceAll('.mdx', ''));
+        }
       }
       setLoading(false);
     };
