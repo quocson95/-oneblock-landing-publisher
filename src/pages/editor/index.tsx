@@ -56,14 +56,16 @@ export function Mdxs() {
   if (mdxs.length === 0) return (
   <>
     <Tabs></Tabs>
+    <Button><Link href={`/editor/edit/0`}>Add New</Link></Button>
     <div>No data</div>
-    {/* <Button><Link href={`/editor/edit/0`}>Add New</Link></Button> */}
+    
   </>)
  
   return (
     <div>
-    {/* <Button><Link href={`/editor/0`}>Add New</Link></Button> */}
     <Tabs></Tabs>
+    <Button><Link href={`/editor/edit/0`}>Add New</Link></Button>
+
     <h1>Posts in landing page</h1>
     <table id="customers">
       <thead>

@@ -54,19 +54,20 @@ const CalloutDirectiveDescriptor: DirectiveDescriptor = {
 
 type StringProps = {
   content: string; // Replace 'string' with the actual type of 'content'
-  onContentChange: (markdown: string) => void;
+  onContentChange: (mdxEditor: React.RefObject<MDXEditorMethods | null>) => void;
 };
 
 
 const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
   const mdxEditorRef = React.useRef<MDXEditorMethods>(null)
   mdxEditorRef.current?.setMarkdown(content);
+  onContentChange(mdxEditorRef);
     return (<div>
       <MDXEditor     
       contentEditableClassName="prose"
        markdown={content} 
       ref={mdxEditorRef}
-      onChange={onContentChange}
+      // onChange={onContentChange}
       // markdown={content}
       plugins={[
         headingsPlugin(),

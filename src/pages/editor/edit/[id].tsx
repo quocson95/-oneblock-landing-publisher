@@ -3,12 +3,13 @@
 import Button from "@/components/Button";
 import Loading from "@/components/loading";
 import dynamic from "next/dynamic";
-import {  Suspense, useEffect, useRef, useState } from "react";
+import React, {  Suspense, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { HostBackend } from "@/libs/contanst";
 import { getCookie } from "cookies-next";
 import Tabs from "@/components/Tabs";
 import { ConvertToNameFormat, ToNonAccentVietnamese } from "@/libs/ nonAccentVietnamese";
+import { AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, ChangeAdmonitionType, ChangeCodeMirrorLanguage, codeMirrorPlugin, CodeToggle, ConditionalContents, diffSourcePlugin, DiffSourceToggleWrapper, DirectiveDescriptor, directivesPlugin, frontmatterPlugin, GenericDirectiveEditor, imagePlugin, InsertCodeBlock, InsertFrontmatter, InsertImage, InsertSandpack, InsertTable, InsertThematicBreak, KitchenSinkToolbar, linkDialogPlugin, ListsToggle, MDXEditorMethods, ShowSandpackInfo, tablePlugin, UndoRedo, type CodeBlockEditorDescriptor, type SandpackConfig } from '@mdxeditor/editor';
 
 const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
@@ -20,7 +21,7 @@ const Editor =  () =>{
     const didInit = useRef(false);   
     const router = useRouter();
     const slug = useRef('');
-    
+    let mdxEditorRef = React.useRef<MDXEditorMethods>(null)
     async function fetchPosts() {      
       if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
         setMdxContent(' ');
@@ -33,20 +34,25 @@ const Editor =  () =>{
         const bodyJson = await res.json();      
         // console.log(bodyJson);
         setMdxContent(bodyJson.content);
-        setName(bodyJson.name.replaceAll('.mdx', ''));
+        setName(bodyJson.display_name.replaceAll('.mdx', ''));
       }
       setLoading(false);
     };
 
     const saveMdx = async (id: number) => {
-      // console.log('save', mdxContent)
-      let saveName = fixNameOfMdx(name);
+      if (!mdxEditorRef ||!mdxEditorRef.current) {
+        console.log('mdxEditorRef is null');
+        return;
+      }
+      setMdxContent(mdxEditorRef.current.getMarkdown());
+      const dispName = name;
+      let saveName = fixNameOfMdx(name.replaceAll('.mdx', ''));
       if (!saveName.endsWith(".mdx")) {
         saveName += ".mdx"
       }
       const cookie = await getCookie("session")?.toString();
-      const res = await fetch(`${HostBackend}/be/admin/mdx/?name=${saveName}&id=${id}`,
-         {method: "put", body: mdxContent, headers: {          Authorize: `${cookie}`,
+      const res = await fetch(`${HostBackend}/be/admin/mdx/?name=${saveName}&id=${id}&dispName=${dispName}`,
+         {method: "put", body: mdxEditorRef.current.getMarkdown(), headers: {          Authorize: `${cookie}`,
       }} )
       console.log(res);
       if (res.status == 200) {
@@ -69,12 +75,14 @@ const Editor =  () =>{
       setMdxContent(mdx);
     }
 
+    
+
     useEffect(() => {
       if (didInit.current) {
         return;
       }
       const { id } = router.query;
-      console.log(id);
+      // console.log(id);
       if (id as string[]) {
         slug.current = id?.toString() || '';
       }
@@ -97,7 +105,7 @@ const Editor =  () =>{
           <div className="grid gap-6 mb-6 md:grid-cols-2">
           <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Name</label>
-              <input onChange={(e)=>{ fixNameOfMdx(e.target.value)}}              
+              <input onChange={(e)=>{ setName(e.target.value)}}              
               value={name}
               maxLength={80}
                 type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
@@ -106,7 +114,7 @@ const Editor =  () =>{
         </form>        
        
         <Suspense fallback={<Loading />}>
-        <EditorComp content={mdxContent} onContentChange={copyContentMdx}/>        
+        <EditorComp content={mdxContent} onContentChange={(x)=>{mdxEditorRef=x}}/>        
         </Suspense>
       </>
     )
