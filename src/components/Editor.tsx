@@ -65,7 +65,7 @@ const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
     return (<div>
       <MDXEditor     
       contentEditableClassName="prose"
-       markdown={content} 
+      markdown={content} 
       ref={mdxEditorRef}
       // onChange={console.log}
       // markdown={content}

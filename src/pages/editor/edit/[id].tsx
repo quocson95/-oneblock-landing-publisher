@@ -18,7 +18,6 @@ const Editor =  () =>{
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState('');
     const[saveStatus, setSaveStatus] = useState('')
-    const didInit = useRef(false);   
     const router = useRouter();
     const slug = useRef('');
     let mdxEditorRef = React.useRef<MDXEditorMethods>(null)
@@ -85,7 +84,7 @@ title: ''
       return name
     }
 
-    const copyContentMdx = (mdx: string) => {
+    const frontmatterMarkdown = (mdx: string) => {
       // console.log(mdx)
       setMdxContent(mdx);
     }
@@ -93,17 +92,13 @@ title: ''
     
 
     useEffect(() => {
-      if (didInit.current) {
-        return;
-      }
       const { id } = router.query;
       // console.log(id);
       if (id as string[]) {
         slug.current = id?.toString() || '';
       }
-      didInit.current = true;
       fetchPosts();
-    }, [router.query])
+    }, [router])
     if (loading) {
       return <Loading></Loading>
     }
