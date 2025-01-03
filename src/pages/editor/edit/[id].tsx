@@ -22,17 +22,8 @@ const Editor =  () =>{
     const slug = useRef('');
     let mdxEditorRef = React.useRef<MDXEditorMethods>(null)
     async function fetchPosts() {      
-      const defaultMdx = `---
-heroImage: https://api.oneblock.vn/be/s3?bucket=cms-images&name=OneBlock-Logo-Black-RGB%401x.png
-category:
-description: ''
-pubDate: '${new Date().toISOString()}'
-tags:
-   - crypto
-title: ''
----`
       if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
-        setMdxContent(defaultMdx);
+        setMdxContent(' ');
         setLoading(false);
         return;
       }
@@ -40,15 +31,9 @@ title: ''
         console.log('load mdx', slug.current);
         const res = await fetch(`${HostBackend}/be/mdx/${slug.current}?loadContent=1`)
         const bodyJson = await res.json();      
-        if (bodyJson.content > 0) {
-          setMdxContent(bodyJson.content);
-        } else {
-          
-          setMdxContent(defaultMdx);
-        }
-        if (bodyJson.name.length > 0) {
-          setName(bodyJson.name.replaceAll('.mdx', ''));
-        }
+        // console.log(bodyJson);
+        setMdxContent(bodyJson.content);
+        setName(bodyJson.display_name.replaceAll('.mdx', ''));
       }
       setLoading(false);
     };
@@ -80,7 +65,6 @@ title: ''
       name = name.trim().toLowerCase().substring(0, 80);
       name = ToNonAccentVietnamese(name);
       name = ConvertToNameFormat(name);
-      setName(name);
       return name
     }
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const Tabs = () =>{
     const router = useRouter();
-    const [tabActive,setTabActive] =useState(0);
+    const [tabActive,setTabActive] = useState(0);
     const cssActive="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500"
     const cssDeactive="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
     useEffect(()=>{
@@ -13,7 +13,9 @@ const Tabs = () =>{
             setTabActive(1);
         } else if (asPath.startsWith("/eventcraw")) {
             setTabActive(2);
-        } else {
+        }  else if (asPath.startsWith("/gallery")) {
+            setTabActive(3);
+        }else {
             setTabActive(0);
         }
         window.document.getElementById("landing")?.ariaSetSize
@@ -31,6 +33,9 @@ const Tabs = () =>{
             </li>
             <li className="me-2">
                 <Link  href="/eventcraw" id="crawl" className={` ${tabActive==2 ? cssActive : cssDeactive}`}>Event</Link>
+            </li>
+            <li className="me-2">
+                <Link  href="/gallery" id="crawl" className={` ${tabActive==3 ? cssActive : cssDeactive}`}>Gallery</Link>
             </li>
         </ul>
         </>
