@@ -22,7 +22,7 @@ const Tabs = () =>{
     },[])
     return (
         <>
-        <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">            
+        <ul className="flex flex-wrap text-sm font-medium text-center text-green-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">            
             <li className="me-2">
                 <Link href="/editor" aria-current="page" id="landing" className={` ${tabActive==0 ? cssActive : cssDeactive}`}>
                 Edit Landing Page
