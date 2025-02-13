@@ -14,29 +14,14 @@ import { AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, ChangeAdmoni
 const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
 const Editor =  () =>{
-    const [mdxContent, setMdxContent] = useState(' ');
+    const [mdxContent, setMdxContent] = useState<string>();
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState('');
     const[saveStatus, setSaveStatus] = useState('')
     const router = useRouter();
     const slug = useRef('');
     let mdxEditorRef = React.useRef<MDXEditorMethods>(null)
-    async function fetchPosts() {      
-      if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
-        setMdxContent(' ');
-        setLoading(false);
-        return;
-      }
-      {
-        console.log('load mdx', slug.current);
-        const res = await fetch(`${HostBackend}/be/mdx/${slug.current}?loadContent=1`)
-        const bodyJson = await res.json();      
-        // console.log(bodyJson);
-        setMdxContent(bodyJson.content);
-        setName(bodyJson.display_name.replaceAll('.mdx', ''));
-      }
-      setLoading(false);
-    };
+    
 
     const saveMdx = async (id: number) => {
       if (!mdxEditorRef ||!mdxEditorRef.current) {
@@ -81,6 +66,22 @@ const Editor =  () =>{
       if (id as string[]) {
         slug.current = id?.toString() || '';
       }
+      const fetchPosts = async () =>{      
+        if (!slug.current || slug.current.length <= 0 || slug.current =='' || slug.current=='0') {
+          setMdxContent(' ');
+          setLoading(false);
+          return;
+        }
+        {
+          console.log('load mdx', slug.current);
+          const res = await fetch(`${HostBackend}/be/mdx/${slug.current}?loadContent=1`)
+          const bodyJson = await res.json();      
+          setMdxContent(bodyJson.content);
+          mdxEditorRef.current?.setMarkdown(bodyJson.content)
+          setName(bodyJson.display_name.replaceAll('.mdx', ''));
+        }
+        setLoading(false);
+      };
       fetchPosts();
     }, [router])
     if (loading) {
@@ -108,7 +109,7 @@ const Editor =  () =>{
         </form>        
        
         <Suspense fallback={<Loading />}>
-        <EditorComp content={mdxContent} onContentChange={(x)=>{mdxEditorRef=x}}/>        
+        {mdxContent && mdxContent.length > 0 && <EditorComp content={mdxContent} onContentChange={(x)=>{mdxEditorRef=x}}/> }       
         </Suspense>
       </>
     )

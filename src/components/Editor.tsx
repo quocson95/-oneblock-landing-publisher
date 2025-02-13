@@ -1,16 +1,16 @@
 'use client';
 // You can use this code in a separate component that's imported in your pages.
-import { AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, ChangeAdmonitionType, ChangeCodeMirrorLanguage, codeMirrorPlugin, CodeToggle, ConditionalContents, diffSourcePlugin, DiffSourceToggleWrapper, DirectiveDescriptor, directivesPlugin, frontmatterPlugin, GenericDirectiveEditor, imagePlugin, InsertCodeBlock, InsertFrontmatter, InsertImage, InsertSandpack, InsertTable, InsertThematicBreak, KitchenSinkToolbar, linkDialogPlugin, ListsToggle, MDXEditorMethods, ShowSandpackInfo, tablePlugin, UndoRedo, type CodeBlockEditorDescriptor, type SandpackConfig } from '@mdxeditor/editor';
+import { AdmonitionDirectiveDescriptor,  codeMirrorPlugin, diffSourcePlugin, DirectiveDescriptor, directivesPlugin, frontmatterPlugin, GenericDirectiveEditor, imagePlugin, InsertCodeBlock, InsertFrontmatter, InsertImage, InsertSandpack, InsertTable, InsertThematicBreak, KitchenSinkToolbar, linkDialogPlugin,  MDXEditorMethods,  tablePlugin, type SandpackConfig } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
 import React from 'react';
-import { MDXEditor , codeBlockPlugin, headingsPlugin, listsPlugin, 
+import { MDXEditor , codeBlockPlugin, headingsPlugin, 
   linkPlugin, quotePlugin, markdownShortcutPlugin, 
-  useCodeBlockEditorContext,
   toolbarPlugin,
   sandpackPlugin,
   thematicBreakPlugin,
  }  from '@mdxeditor/editor';
 import {imageUpload,imagePreview} from './Upload';
+import { error } from 'console';
 
 const simpleSandpackConfig: SandpackConfig = {
   defaultPreset: 'react',
@@ -60,6 +60,13 @@ type StringProps = {
 
 const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
   const mdxEditorRef = React.useRef<MDXEditorMethods>(null)
+  const  onMdxError  = ( payload: {
+    error: string;
+    source: string;
+}) =>{
+  console.log(payload.error)
+  console.log(payload.source)
+}
   // mdxEditorRef.current?.setMarkdown(content);
   onContentChange(mdxEditorRef);
     return (<div>
@@ -67,6 +74,7 @@ const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
       contentEditableClassName="prose"
       markdown={content} 
       ref={mdxEditorRef}
+      onError={onMdxError}
       // onChange={console.log}
       // markdown={content}
       plugins={[
