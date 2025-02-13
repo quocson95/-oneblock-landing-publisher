@@ -9,7 +9,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN corepack enable
+RUN npm install -g corepack@latest && corepack enable pnpm
 WORKDIR /app
 
 # Copy package.json and package-lock.json

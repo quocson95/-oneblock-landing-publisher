@@ -1,7 +1,7 @@
 import { JWTPayload, SignJWT, jwtVerify } from 'jose'
 
-let secretKey = "process.env.SESSION_SECRET"
-let encodedKey = new TextEncoder().encode(secretKey)
+const secretKey = "process.env.SESSION_SECRET"
+const encodedKey = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: string) {
         return new SignJWT({payload})

@@ -51,7 +51,7 @@ const Editor =  () =>{
       }
       const cookie = await getCookie("session")?.toString();
       const res = await fetch(`${HostBackend}/be/admin/mdx/?name=${saveName}&id=${id}&dispName=${dispName}`,
-         {method: "put", body: mdxEditorRef.current.getMarkdown(), headers: {          Authorize: `${cookie}`,
+         {method: "put", body: mdxEditorRef.current.getMarkdown(), headers: {          Authorization: `${cookie}`,
       }} )
       console.log(res);
       if (res.status == 200) {

@@ -13,6 +13,6 @@ export default function handler(
   const {id}= req.query;
   // createSession(id as string);
   // res.status(200).json({ name: "John Doe" });
-  res.setHeaders
+  // res.setHeaders
   res.redirect("/dashboard")
 }

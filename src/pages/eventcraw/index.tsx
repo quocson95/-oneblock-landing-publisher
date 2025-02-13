@@ -1,5 +1,6 @@
 import Tabs from "@/components/Tabs";
 import { HostBackend } from "@/libs/contanst";
+import FectIntercerp from "@/libs/intercerpFecth";
 import { getCookie } from "cookies-next";
 import { useEffect, useRef, useState } from "react";
 
@@ -26,10 +27,10 @@ const EventCraw = ()=>{
     }
     
     const [events, setEvents] = useState([])
-    let didInit = useRef(false);
+    const didInit = useRef(false);
     const getEventsIcs = async()=>{
         const cookie = await getCookie("session")?.toString();
-        const res = await fetch(`${HostBackend}/be/admin/ics/log`, {headers: {          Authorize: `${cookie}`}});
+        const res = await FectIntercerp(`${HostBackend}/be/admin/ics/log`, {headers: {          Authorization: `${cookie}`}});
         const events = await res.json();
         setEvents(events);
     }

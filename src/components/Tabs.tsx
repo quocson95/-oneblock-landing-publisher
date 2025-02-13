@@ -18,8 +18,8 @@ const Tabs = () =>{
         }else {
             setTabActive(0);
         }
-        window.document.getElementById("landing")?.ariaSetSize
-    },[])
+        // window.document.getElementById("landing")?.ariaSetSize
+    },[router])
     return (
         <>
         <ul className="flex flex-wrap text-sm font-medium text-center text-green-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">            

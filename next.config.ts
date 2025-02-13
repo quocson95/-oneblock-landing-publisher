@@ -15,8 +15,10 @@ module.exports = {
       hostname: 'api.oneblock.vn',
       port: '',
       pathname: '/be/s3/**'
-    }]
+    }],
   },
+   //  compress
+   compress: true,
 };
 
 export default nextConfig;

@@ -71,9 +71,8 @@ const EditorComp: React.FC<StringProps> = ({content, onContentChange}) => {
       // markdown={content}
       plugins={[
         headingsPlugin(),
-        listsPlugin(),
+        // listsPlugin(),
         linkPlugin(),
-        // linkDialogPlugin(),
         quotePlugin(),
         thematicBreakPlugin(),
         tablePlugin(),
