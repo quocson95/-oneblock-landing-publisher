@@ -2,19 +2,39 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { MDXEditorProps } from "@mdxeditor/editor"
 
-export default function Form() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  })
 
+export type FrontMatterMdx = {
+  heroImage: "",
+  category: "",
+  description: "",
+  pubDate: "",
+  tags: string[],
+  tagsAsInput: string,
+  title: ""
+}
+
+export type FormProps = {
+  data: FrontMatterMdx | undefined,
+  onSubmit(mdxForm: FrontMatterMdx): void
+}
+
+export default function FrontMatterMdxForm(props : FormProps) {
+ 
+  const [formData, setFormData] = useState<FrontMatterMdx>({heroImage:"",category:"",description:"",pubDate:"",tags: [],title:"",  tagsAsInput: ""});
+  useEffect(()=>{
+    if (props.data) {
+      props.data.tagsAsInput = props.data.tags.join(",");
+      setFormData(props.data);
+    }
+  }, [props.data])
+ 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -25,8 +45,11 @@ export default function Form() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
+    // console.log("Form submitted:", formData)
     // Add your form submission logic here
+    formData.tags = formData.tagsAsInput.split(",")
+    
+    props.onSubmit(formData);
   }
 
   return (
@@ -38,35 +61,58 @@ export default function Form() {
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="heroImage">Thumpnail Image</Label>
             <Input
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-              value={formData.name}
+              id="heroImage"
+              name="heroImage"
+              type="text"
+              placeholder="Enter url image"
+              value={formData.heroImage}
               onChange={handleChange}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="title">Title</Label>
             <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              value={formData.email}
+              id="title"
+              name="title"
+              type="text"
+              placeholder="Enter Title"
+              value={formData.title}
               onChange={handleChange}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
+            <Label htmlFor="message">Description</Label>
             <Input
-              id="message"
-              name="message"
-              placeholder="Enter your message"
-              value={formData.message}
+              id="description"
+              name="description"
+              placeholder="Enter description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="tagsAsInput">Tags</Label>
+            <Input
+              id="tagsAsInput"
+              name="tagsAsInput"
+              placeholder="Enter tags"
+              value={formData.tagsAsInput}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="message">Category</Label>
+            <Input
+              id="category"
+              name="category"
+              placeholder="Enter category"
+              value={formData.category}
               onChange={handleChange}
               required
             />
@@ -74,7 +120,7 @@ export default function Form() {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full">
-            Submit
+            Save
           </Button>
         </CardFooter>
       </form>

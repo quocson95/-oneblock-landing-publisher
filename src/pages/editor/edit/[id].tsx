@@ -10,11 +10,13 @@ import { getCookie } from "cookies-next";
 import Tabs from "@/components/Tabs";
 import { ConvertToNameFormat, ToNonAccentVietnamese } from "@/libs/ nonAccentVietnamese";
 import { AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, ChangeAdmonitionType, ChangeCodeMirrorLanguage, codeMirrorPlugin, CodeToggle, ConditionalContents, diffSourcePlugin, DiffSourceToggleWrapper, DirectiveDescriptor, directivesPlugin, frontmatterPlugin, GenericDirectiveEditor, imagePlugin, InsertCodeBlock, InsertFrontmatter, InsertImage, InsertSandpack, InsertTable, InsertThematicBreak, KitchenSinkToolbar, linkDialogPlugin, ListsToggle, MDXEditorMethods, ShowSandpackInfo, tablePlugin, UndoRedo, type CodeBlockEditorDescriptor, type SandpackConfig } from '@mdxeditor/editor';
+import FrontMatterMdxForm, { FrontMatterMdx } from "./form";
 
 const EditorComp = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
 const Editor =  () =>{
     const [mdxContent, setMdxContent] = useState<string>();
+    const [mdxFrontMatter, setMdxFrontMatter] = useState<FrontMatterMdx>();
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState('');
     const[saveStatus, setSaveStatus] = useState('')
@@ -58,6 +60,42 @@ const Editor =  () =>{
       setMdxContent(mdx);
     }
 
+    const submitForm = async (data: FrontMatterMdx) => {
+      console.log(data)
+      if (!mdxEditorRef ||!mdxEditorRef.current) {
+        console.log('mdxEditorRef is null');
+        return;
+      }
+      setMdxContent(mdxEditorRef.current.getMarkdown());
+      const dispName = name;
+      let saveName = fixNameOfMdx(name.replaceAll('.mdx', ''));
+      if (!saveName.endsWith(".mdx")) {
+        saveName += ".mdx"
+      }
+      const id = parseInt(slug.current);
+      // pubDate: "2025-03-06T10:24:16.94622Z"
+      const formData = new FormData();
+      formData.set("title",data.title);
+      formData.set("category",data.category);
+      formData.set("description",data.description);
+      formData.set("heroImage",data.heroImage);
+      formData.set("tags",data.tagsAsInput);
+      formData.set("dispName", dispName);
+      formData.set("content", mdxEditorRef.current.getMarkdown())
+      formData.set("pubDate",new Date().toISOString());
+      formData.set("name", saveName);
+      const cookie = await getCookie("session")?.toString();
+      const res = await fetch(`${HostBackend}/be/admin/mdx/?name=${saveName}&id=${id}&dispName=${dispName}`,
+         {method: "put", body: formData, headers: {          Authorization: `${cookie}`,
+      }} )
+
+      console.log(res);
+      if (res.status == 200) {
+        setSaveStatus('Save success!'); // Displays a success message
+      } else {
+        setSaveStatus('Save failed!'+ res.status); // Displays a success message
+      }
+    } 
     
 
     useEffect(() => {
@@ -77,6 +115,7 @@ const Editor =  () =>{
           const res = await fetch(`${HostBackend}/be/mdx/${slug.current}?loadContent=1`)
           const bodyJson = await res.json();      
           setMdxContent(bodyJson.content);
+          setMdxFrontMatter(bodyJson.frontMatter);
           mdxEditorRef.current?.setMarkdown(bodyJson.content)
           setName(bodyJson.display_name.replaceAll('.mdx', ''));
         }
@@ -84,9 +123,12 @@ const Editor =  () =>{
       };
       fetchPosts();
     }, [router])
+
     if (loading) {
       return <Loading></Loading>
     }
+
+
     
     return(
       <>
@@ -96,6 +138,8 @@ const Editor =  () =>{
         { saveStatus.length > 0 &&
         <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"> {saveStatus}</button>
         }
+        
+        {!loading && <FrontMatterMdxForm data={mdxFrontMatter} onSubmit={submitForm} ></FrontMatterMdxForm>}
         <form>
           <div className="grid gap-6 mb-6 md:grid-cols-2">
           <div>
