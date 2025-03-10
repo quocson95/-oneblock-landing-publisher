@@ -55,8 +55,7 @@ export default function FrontMatterMdxForm(props : FormProps) {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Contact Form</CardTitle>
-        <CardDescription>Fill out the form below to get in touch with us.</CardDescription>
+        <CardTitle></CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
