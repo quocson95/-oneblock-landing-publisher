@@ -1,3 +1,6 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0e715fc1-4435-49c3-a321-2e9a60633a29/deploy-status)](https://app.netlify.com/sites/oneblock-editor/deploys)
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started
