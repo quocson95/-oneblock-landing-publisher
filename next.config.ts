@@ -19,6 +19,7 @@ module.exports = {
   },
    //  compress
    compress: true,
+   allowedDevOrigins: ['103.82.133.178'],
 };
 
 export default nextConfig;

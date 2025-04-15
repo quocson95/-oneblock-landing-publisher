@@ -9,6 +9,7 @@ export function Mdxs() {
   const [mdxs, setData] = useState([])
   const didInit = useRef(false);
   const loading = useRef(true);
+  const [publishResult,setPublishResult] = useState<number>(0)
   useEffect(() => {
     async function fetchPosts() {
       if (didInit.current) {
@@ -46,6 +47,27 @@ export function Mdxs() {
     alert(`Edit item with ID: ${id}`);
     // Implement edit functionality here
   };
+
+  const handleClickPublish = async () => {
+    try {
+      const res = await fetch('https://api.vercel.com/v1/integrations/deploy/prj_KePti4DC6uPHUQTIn8EXywpy03Iy/Rnorct5lOA', {
+        method: 'POST',
+      });
+
+      if (!res.ok) {
+        // throw new Error(`HTTP error! status: ${res.status}`);
+        setPublishResult(-1);
+        return;
+      }
+
+      const data = await res.json();
+      console.log('Deploy triggered:', data);
+      setPublishResult(1);
+    } catch (error) {
+      console.error('Deploy failed:', error);
+      setPublishResult(-1);
+    }
+  };
  
   if (loading.current) return (
     <>
@@ -65,7 +87,9 @@ export function Mdxs() {
     <div>
     <Tabs></Tabs>
     <Button><Link href={`/editor/edit/0`}>Add New</Link></Button>
-
+    <Button onClick={handleClickPublish}>Publish</Button>
+    <h1 style={{color:"red"}}>{publishResult >0?"Publish Success":publishResult?"Publish Failure":""}</h1>
+    <br></br>
     <h1>Posts in landing page</h1>
     <table id="customers">
       <thead>
