@@ -51,8 +51,8 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2
       lucide-react:
-        specifier: ^0.485.0
-        version: 0.485.0(react@18.3.1)
+        specifier: ^0.511.0
+        version: 0.511.0(react@18.3.1)
       next:
         specifier: 15.2.4
         version: 15.2.4(@babel/core@7.26.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2599,8 +2599,8 @@ packages:
   lexical@0.27.2:
     resolution: {integrity: sha512-R255V+4VBqZmSMWeuMrCNHJZd3L+qBkYYFrxkiO3FLg/36HatZLUdZLRYx+fOMWeSddo0DP9EVl0GTZzNb7v0w==}
 
-  lib0@0.2.100:
-    resolution: {integrity: sha512-ACQmtZ8cRD7/SpBEzBP88KrgrjOnhfcOANhhk8ASv+HFEvBSHOprxur3vuhmNw4YLq29y4Yen4jU0jHpIqVYWw==}
+  lib0@0.2.108:
+    resolution: {integrity: sha512-+3eK/B0SqYoZiQu9fNk4VEc6EX8cb0Li96tPGKgugzoGj/OdRdREtuTLvUW+mtinoB2mFiJjSqOJBIaMkAGhxQ==}
     engines: {node: '>=16'}
     hasBin: true
 
@@ -2638,8 +2638,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.485.0:
-    resolution: {integrity: sha512-NvyQJ0LKyyCxL23nPKESlr/jmz8r7fJO1bkuptSNYSy0s8VVj4ojhX0YAgmE1e0ewfxUZjIlZpvH+otfTnla8Q==}
+  lucide-react@0.511.0:
+    resolution: {integrity: sha512-VK5a2ydJ7xm8GvBeKLS9mu1pVK6ucef9780JVUjw6bAjJL/QXnd4Y0p7SPeOUMC27YhzNCZvm5d/QX0Tp3rc0w==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -2911,6 +2911,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch@3.3.2:
     resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
@@ -6844,7 +6845,7 @@ snapshots:
 
   lexical@0.27.2: {}
 
-  lib0@0.2.100:
+  lib0@0.2.108:
     dependencies:
       isomorphic.js: 0.2.5
 
@@ -6877,7 +6878,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.485.0(react@18.3.1):
+  lucide-react@0.511.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -8491,7 +8492,7 @@ snapshots:
 
   yjs@13.6.24:
     dependencies:
-      lib0: 0.2.100
+      lib0: 0.2.108
 
   yocto-queue@0.1.0: {}
 
