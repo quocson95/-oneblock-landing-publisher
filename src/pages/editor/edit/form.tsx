@@ -30,8 +30,12 @@ export default function FrontMatterMdxForm(props : FormProps) {
   const [formData, setFormData] = useState<FrontMatterMdx>({heroImage:"",category:"",description:"",pubDate:"",tags: [],title:"",  tagsAsInput: ""});
   useEffect(()=>{
     if (props.data) {
-      props.data.tagsAsInput = props.data.tags.join(",");
-      setFormData(props.data);
+      const tags = props.data.tags ?? [];
+      props.data.tagsAsInput = tags.join(",");
+      setFormData({
+        ...props.data,
+        tags,
+      });
     }
   }, [props.data])
  
