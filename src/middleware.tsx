@@ -1,4 +1,4 @@
-import { KeyTokenSession } from '@/libs/contanst'
+import { KeyTokenSession } from '@/libs/constants'
 import { NextRequest, NextResponse } from 'next/server'
 import UseStorage from './libs/userStorage'
 import { cookies } from 'next/headers'

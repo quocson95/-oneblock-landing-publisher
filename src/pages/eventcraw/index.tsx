@@ -1,5 +1,5 @@
 import Tabs from "@/components/Tabs";
-import { HostBackend } from "@/libs/contanst";
+import { HostBackend } from "@/libs/constants";
 import FectIntercerp from "@/libs/intercerpFecth";
 import { getCookie } from "cookies-next";
 import { useEffect, useRef, useState } from "react";
