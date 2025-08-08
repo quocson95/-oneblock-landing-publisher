@@ -26,7 +26,8 @@ const ConvertToNameFormat = (str: string) => {
     str = str.replace(/\s-+/g, "-");
     str = str.replaceAll(' ', '-');
     return str.trim();
-}
+};
+
 export default ToNonAccentVietnamese;
 
-export {ConvertToNameFormat, ToNonAccentVietnamese };
+export { ConvertToNameFormat, ToNonAccentVietnamese };
