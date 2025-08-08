@@ -117,7 +117,8 @@ const Editor =  () =>{
           setMdxContent(bodyJson.content);
           setMdxFrontMatter(bodyJson.frontMatter);
           mdxEditorRef.current?.setMarkdown(bodyJson.content)
-          setName(bodyJson.display_name.replaceAll('.mdx', ''));
+          // display_name might be missing which would cause a runtime error when calling replaceAll
+          setName(bodyJson.display_name?.replaceAll('.mdx', '') || '');
         }
         setLoading(false);
       };
