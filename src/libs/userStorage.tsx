@@ -6,7 +6,7 @@ type UseStorageReturnValue = {
 
   setItem: (key: string, value: string, type?: StorageType) => boolean;
 
-  removeItem: (key: string, type?: StorageType) => void;
+  removeItem: (key: string, type?: StorageType) => boolean;
 
 };
 
@@ -32,10 +32,10 @@ const UseStorage = (): UseStorageReturnValue => {
         return false;
     }
 
-    const removeItem = (key: string, type?: StorageType) => {
+    const removeItem = (key: string, type?: StorageType): boolean => {
         if (isBrowser) {
             window[storageType(type)].removeItem(key);
-        return true;
+            return true;
         }
         return false;
     }
