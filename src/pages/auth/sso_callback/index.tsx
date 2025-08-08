@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { HostBackend } from "@/libs/contanst";
+import { HostBackend } from "@/libs/constants";
 import { setCookie } from "cookies-next";
 
 const Page =()=>{

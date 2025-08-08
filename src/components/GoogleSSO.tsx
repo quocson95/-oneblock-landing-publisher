@@ -1,6 +1,6 @@
 'use client';
 
-import { HostBackend } from "@/libs/contanst";
+import { HostBackend } from "@/libs/constants";
 import Image from "next/image";
 import LoggoOneblockIconFull from "./Icons/OneblockIcon";
 

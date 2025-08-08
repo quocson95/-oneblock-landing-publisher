@@ -5,7 +5,7 @@ import Loading from "@/components/loading";
 import dynamic from "next/dynamic";
 import React, {  Suspense, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { HostBackend } from "@/libs/contanst";
+import { HostBackend } from "@/libs/constants";
 import { getCookie } from "cookies-next";
 import Tabs from "@/components/Tabs";
 import { ConvertToNameFormat, ToNonAccentVietnamese } from "@/libs/nonAccentVietnamese";
