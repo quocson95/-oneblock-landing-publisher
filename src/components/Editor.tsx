@@ -53,7 +53,7 @@ const CalloutDirectiveDescriptor: DirectiveDescriptor = {
 }
 
 type StringProps = {
-  content: string; // Replace 'string' with the actual type of 'content'
+  content: string; // MDX markdown source as a string
   onContentChange: (mdxEditor: React.RefObject<MDXEditorMethods | null>) => void;
 };
 
