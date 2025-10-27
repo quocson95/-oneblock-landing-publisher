@@ -19,7 +19,7 @@
     "card": "^2.5.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cookies-next": "^5.1.0",
+    "cookies-next": "^6.1.1",
     "core-js": "^3.41.0",
     "input": "^1.0.1",
     "jose": "^6.0.10",
