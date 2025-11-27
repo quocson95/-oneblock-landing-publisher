@@ -39,9 +39,6 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
@@ -55,6 +52,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       # This generates the .open-next/ directory
       - name: Build with OpenNext
