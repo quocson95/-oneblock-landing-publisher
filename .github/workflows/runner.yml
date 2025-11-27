@@ -1,0 +1,54 @@
+name: Deploy Oneblock Editor
+
+on:
+  push:
+    branches:
+      - dev 
+      - main
+  workflow_dispatch:   
+    inputs:
+      environment:
+        description: "Choose environment: <dev|prod>"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - prod 
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Build & Deploy
+    steps:
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile  
+
+      # Builds the Next.js app for Cloudflare Workers/Pages
+      # Ensures the output is in .vercel/output/static
+      - name: Build with next-on-pages
+        run: pnpm dlx @cloudflare/next-on-pages
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # "my-next-app" must match your Cloudflare Pages project name
+          # .vercel/output/static is the standard output for next-on-pages
+          command: pages deploy --env ${{ github.event.inputs.environment }} .vercel/output/static --project-name=oneblock-editor --commit-dirty=true

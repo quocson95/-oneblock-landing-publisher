@@ -1,0 +1,43 @@
+{
+    "name": "oneblock-editor",
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "main": ".open-next/worker.js",
+    "compatibility_date": "2025-11-27",
+    "compatibility_flags": [
+      "nodejs_compat"
+    ],
+    "assets": {
+      "directory": ".open-next/assets",
+      "binding": "ASSETS"
+    },
+    "routes": [
+    {
+      "pattern": "editor.oneblock.vn",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.editor.oneblock.vn",
+      "custom_domain": true
+    }
+  ],
+  "env": {
+    "dev": {
+      "name": "oneblock-editor-dev",
+      "routes": [
+        {
+          "pattern": "editor-dev.oneblock.vn",
+          "custom_domain": true
+        }
+      ]
+    },
+    "prod": {
+      "name": "oneblock-landing-prod",
+      "routes": [
+        {
+          "pattern": "editor.oneblock.vn",
+          "custom_domain": true
+        }
+      ]
+    }
+  }
+}
