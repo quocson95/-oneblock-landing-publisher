@@ -30,7 +30,7 @@
         }
       ]
     },
-    "prod": {
+    "main": {
       "name": "oneblock-landing-prod",
       "routes": [
         {
