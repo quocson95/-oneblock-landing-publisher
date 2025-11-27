@@ -50,4 +50,4 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # "my-next-app" must match your Cloudflare Pages project name
           # .vercel/output/static is the standard output for next-on-pages
-          command: pages deploy --env ${{ github.event.inputs.environment }} .vercel/output/static --project-name=oneblock-editor --commit-dirty=true
+          command: pages deploy --branch ${{ github.event.inputs.environment }} .vercel/output/static --project-name=oneblock-editor --commit-dirty=true
