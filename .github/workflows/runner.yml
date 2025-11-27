@@ -44,7 +44,7 @@ jobs:
 
       # This generates the .open-next/ directory
       - name: Build with OpenNext
-        run: pnpm dlx @opennextjs/cloudflare
+        run: pnpm dlx @opennextjs/cloudflare build
 
       # Debugging: Verify the folder expected by wrangler.jsonc exists
       - name: Verify build output
