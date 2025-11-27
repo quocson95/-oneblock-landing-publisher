@@ -60,10 +60,6 @@ jobs:
       - name: Build with OpenNext
         run: pnpm dlx @opennextjs/cloudflare build
 
-      # Debugging: Verify the folder expected by wrangler.jsonc exists
-      - name: Verify build output
-        run: ls -R .open-next   
-
       - name: Set deployment environment
         id: set-env
         run: |
