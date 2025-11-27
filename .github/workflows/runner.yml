@@ -3,23 +3,27 @@ name: Deploy Oneblock Editor
 on:
   push:
     branches:
-      - dev 
+      - dev
       - main
-  workflow_dispatch:   
+  workflow_dispatch:
     inputs:
       environment:
-        description: "Choose environment: <dev|prod>"
+        description: "Choose environment: <dev|main>"
         required: true
         default: "dev"
         type: choice
         options:
           - dev
-          - prod 
-    
+          - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Build & Deploy
+    permissions:
+      contents: read
+      deployments: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,21 +37,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          # cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile  
+        run: pnpm install --frozen-lockfile
 
-      # Builds the Next.js app for Cloudflare Workers/Pages
-      # Ensures the output is in .vercel/output/static
-      - name: Build with next-on-pages
-        run: pnpm dlx @cloudflare/next-on-pages
+      # This generates the .open-next/ directory
+      - name: Build with OpenNext
+        run: pnpm dlx @opennextjs/cloudflare
 
-      - name: Deploy to Cloudflare Pages
+      # Debugging: Verify the folder expected by wrangler.jsonc exists
+      - name: Verify build output
+        run: ls -R .open-next     
+
+      # Changed: Use 'wrangler deploy' (Workers) instead of 'pages deploy'
+      # This reads your wrangler.jsonc and uses the environments defined there
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # "my-next-app" must match your Cloudflare Pages project name
-          # .vercel/output/static is the standard output for next-on-pages
-          command: pages deploy --branch ${{ github.event.inputs.environment }} .vercel/output/static --project-name=oneblock-editor --commit-dirty=true
+          # Uses the environment from the step above (dev or prod)
+          command: deploy --env ${{ github.event.inputs.environment }}
