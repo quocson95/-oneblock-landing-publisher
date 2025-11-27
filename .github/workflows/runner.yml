@@ -62,7 +62,18 @@ jobs:
 
       # Debugging: Verify the folder expected by wrangler.jsonc exists
       - name: Verify build output
-        run: ls -R .open-next     
+        run: ls -R .open-next   
+
+      - name: Set deployment environment
+        id: set-env
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "env=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref_name }}" == "main" ]; then
+            echo "env=prod" >> $GITHUB_OUTPUT
+          else
+            echo "env=dev" >> $GITHUB_OUTPUT
+          fi  
 
       # Changed: Use 'wrangler deploy' (Workers) instead of 'pages deploy'
       # This reads your wrangler.jsonc and uses the environments defined there
@@ -72,4 +83,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # Uses the environment from the step above (dev or prod)
-          command: deploy --env ${{ github.event.inputs.environment }}
+          command: deploy --env ${{ steps.set-env.outputs.env }}
