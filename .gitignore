@@ -45,3 +45,5 @@ dist
 .next
 build
 dist
+.open-next
+.wrangler
